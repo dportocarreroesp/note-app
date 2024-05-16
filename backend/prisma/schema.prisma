@@ -18,6 +18,7 @@ model User {
   email      String @unique
   hashed_pwd String
   Note       Note[]
+  Tag        Tag[]
 }
 
 model Note {
@@ -35,9 +36,11 @@ model Note {
 }
 
 model Tag {
-  id    String  @id @default(uuid()) @db.Uuid
-  name  String
-  color String?
+  id       String  @id @default(uuid()) @db.Uuid
+  name     String
+  color    String?
+  owner_id String  @db.Uuid
+  User     User?   @relation(fields: [owner_id], references: [id])
 
   NoteTags NoteTags[]
 }

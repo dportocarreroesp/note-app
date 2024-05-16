@@ -1,13 +1,19 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dtos/sign_in.dto';
 import { SkipAuth } from './skip-auth';
 import { Response } from 'express';
 import { addDays } from 'date-fns';
+import { Request } from 'express';
+import { getJwtPayload } from 'src/lib/utils';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
 
   @SkipAuth()
   @Post('sign_in')
@@ -26,6 +32,12 @@ export class AuthController {
       expires: addDays(new Date(), 3),
     });
 
-    return payload;
+    return this.userService.findById(payload.id);
+  }
+
+  @Get()
+  getSelf(@Req() request: Request) {
+    const { id } = getJwtPayload(request);
+    return this.userService.findById(id);
   }
 }

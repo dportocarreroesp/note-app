@@ -4,10 +4,14 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    cors: true,
+    cors: {
+      origin: process.env.FRONTEND_URL,
+      credentials: true,
+    },
   });
   app.use(cookieParser());
 
   await app.listen(3000);
 }
+
 bootstrap();

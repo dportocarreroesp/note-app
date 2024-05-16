@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   Req,
+  Query,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { Request } from 'express';
 import { getJwtPayload } from 'src/lib/utils';
+import { FilterNoteDto } from './dto/filter-note.dto';
 
 @Controller('note')
 export class NoteController {
@@ -26,10 +28,11 @@ export class NoteController {
   }
 
   @Get()
-  findAll(@Req() request: Request) {
+  findAll(@Req() request: Request, @Query('tagIds') tagIds?: string) {
     const { id: userId } = getJwtPayload(request);
+    const parsedTagIds = tagIds?.split(',');
 
-    return this.noteService.findAll(userId);
+    return this.noteService.findAll(userId, { tagIds: parsedTagIds });
   }
 
   @Get(':id')
@@ -55,5 +58,27 @@ export class NoteController {
     const { id: userId } = getJwtPayload(request);
 
     return this.noteService.remove(userId, id);
+  }
+
+  @Post(':noteId/tag/:tagId')
+  addTag(
+    @Req() request: Request,
+    @Param('noteId') noteId: string,
+    @Param('tagId') tagId: string,
+  ) {
+    const { id: userId } = getJwtPayload(request);
+
+    return this.noteService.addTag(userId, noteId, tagId);
+  }
+
+  @Delete(':noteId/tag/:tagId')
+  removeTag(
+    @Req() request: Request,
+    @Param('noteId') noteId: string,
+    @Param('tagId') tagId: string,
+  ) {
+    const { id: userId } = getJwtPayload(request);
+
+    return this.noteService.removeTag(userId, noteId, tagId);
   }
 }

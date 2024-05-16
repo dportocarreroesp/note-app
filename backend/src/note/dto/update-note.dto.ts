@@ -1,5 +1,5 @@
 export class UpdateNoteDto {
-  title: string;
-  content: string;
-  is_archived?: boolean;
+  title?: string;
+  content?: string;
+  isArchived?: boolean;
 }

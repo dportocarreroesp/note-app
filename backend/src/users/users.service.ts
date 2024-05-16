@@ -12,4 +12,16 @@ export class UsersService {
       },
     });
   }
+
+  findById(id: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        email: true,
+      },
+    });
+  }
 }
