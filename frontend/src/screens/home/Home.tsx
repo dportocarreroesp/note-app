@@ -48,6 +48,7 @@ function Home() {
 					key={selNoteData?.id}
 					data={selNoteData}
 					handleCardSelect={handleCardSelect}
+					selTagIds={selTags}
 				/>
 			</ResizablePanel>
 		</ResizablePanelGroup>

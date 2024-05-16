@@ -12,9 +12,11 @@ import { queryKeys } from "@/lib/queries";
 function NoteDetails({
 	data,
 	handleCardSelect,
+	selTagIds,
 }: {
 	data?: Note;
 	handleCardSelect: (noteId: string) => void;
+	selTagIds: string[];
 }) {
 	const [editing, setEditing] = useState(false);
 
@@ -31,7 +33,9 @@ function NoteDetails({
 		try {
 			await updateNoteMutation({ id: data.id, content });
 			toast.success("Note updated successfully");
-			queryClient.invalidateQueries({ queryKey: queryKeys.getAllNotes });
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.getAllNotes({ tagIds: selTagIds }),
+			});
 		} catch (error) {
 			toast.error(
 				"Something wrong happened while trying to update the note :("
@@ -51,7 +55,9 @@ function NoteDetails({
 			});
 			toast.success("Note archived successfully");
 			handleCardSelect("");
-			queryClient.invalidateQueries({ queryKey: queryKeys.getAllNotes });
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.getAllNotes({ tagIds: selTagIds }),
+			});
 		} catch (error) {
 			toast.error(
 				"Something wrong happened while trying to archive the note :("
@@ -68,7 +74,9 @@ function NoteDetails({
 			await deleteNoteMutation(data.id);
 			toast.success("Note deleted successfully");
 			handleCardSelect("");
-			queryClient.invalidateQueries({ queryKey: queryKeys.getAllNotes });
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.getAllNotes({ tagIds: selTagIds }),
+			});
 		} catch (error) {
 			toast.error(
 				"Something wrong happened while trying to delete the note :("
