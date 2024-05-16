@@ -28,7 +28,8 @@ export class AuthController {
 
     response.cookie('token', payload.access_token, {
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: 'none',
+      secure: true,
       expires: addDays(new Date(), 3),
     });
 
