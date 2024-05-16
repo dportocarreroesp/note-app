@@ -29,17 +29,21 @@ export class NoteService {
     return this.prisma.note.findMany({
       where: {
         owner_id: ownerId,
+        ...(filterNoteDto?.tagIds?.length && {
+          NoteTags: {
+            some: {
+              tag_id: {
+                in: filterNoteDto.tagIds,
+              },
+            },
+          },
+        }),
       },
       orderBy: {
         created_at: 'desc',
       },
       include: {
         NoteTags: {
-          ...(filterNoteDto?.tagIds?.length && {
-            where: {
-              tag_id: { in: filterNoteDto.tagIds },
-            },
-          }),
           include: {
             Tag: true,
           },
