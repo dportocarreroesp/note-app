@@ -13,8 +13,7 @@ import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { Request } from 'express';
-import { getJwtPayload } from 'src/lib/utils';
-import { FilterNoteDto } from './dto/filter-note.dto';
+import { getJwtPayload } from '../lib/utils';
 
 @Controller('note')
 export class NoteController {
