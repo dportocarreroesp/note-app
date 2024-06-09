@@ -1,5 +1,6 @@
 # Notes App
-Basic notes(markdown like) taking app
+Basic notes(markdown like) taking app.
+Try it out [here](https://note-app-xt22.onrender.com).
 
 ## Requirements
 - Node v20+
